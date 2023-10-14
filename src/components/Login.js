@@ -1,9 +1,29 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import  { checkValidation } from "../utils/validate"
 
 
 const Login = () => {
   const [signedUp, setSignedUp] = useState(true);
+  const [message,setMessage]=useState(null)
+  const email=useRef(null)
+  const password=useRef(null)
+  const fullName=useRef(null)
+
+
+  const handleSubmit=()=>{
+
+    console.log("email", email.current.value);
+    console.log("Password", password.current.value);
+
+    const message = checkValidation(
+      email.current.value,
+      password.current.value,
+      
+    );
+  
+    setMessage(message)
+  }
   return (
     <div className="relative ">
       <Header></Header>
@@ -14,33 +34,42 @@ const Login = () => {
         alt="main-background-image"
       ></img>
 
-      <form className="login-form  w-4/12 flex flex-col mx-auto top-40 left-0 right-0  rounded-md absolute bg-black p-8 bg-opacity-80  ">
+      <form
+        className="login-form  w-4/12 flex flex-col mx-auto top-28 left-0 right-0  rounded-md absolute bg-black p-8 bg-opacity-80"
+        onClick={(e) => e.preventDefault()}
+      >
         <h1 className="text-white text-3xl font-bold m-4 ">
           {" "}
           {signedUp ? "Sign In" : "Sign Up"}
         </h1>
-        <input
-          placeholder="Email or phone number"
-          type="email"
-          className="p-4 m-4  bg-gray-700 rounded-lg"
-        ></input>
-        <input
-          placeholder="Password"
-          type="password"
-          className="p-4 m-4 bg-gray-700 rounded-lg"
-        ></input>
         {!signedUp && (
           <input
-            placeholder="Confirm password"
-            type="password"
+            ref={fullName}
+            placeholder="Full name"
+            type="text"
             className="p-4 m-4 bg-gray-700 rounded-lg"
           ></input>
         )}
+        <input
+          ref={email}
+          placeholder="Email or phone number"
+          type="email"
+          className="p-4 m-4  bg-gray-700 rounded-lg text-white"
+        ></input>
+        <input
+          ref={password}
+          placeholder="Password"
+          type="password"
+          className="p-4 m-4 bg-gray-700 rounded-lg text-white"
+        ></input>
 
-        <button className="bg-red-700 m-4 p-4 rounded-lg text-white">
+        <button
+          className="bg-red-700 m-4 p-4 rounded-lg text-white"
+          onClick={handleSubmit}
+        >
           {signedUp ? "Sign In" : "Sign Up"}
         </button>
-
+        <p className="text-center text-red-600 mb-4 font-semibold">{message}</p>
         <div className="flex justify-between">
           <div className="bottom-container mx-4 ">
             <input type="checkbox" className="mx-1 "></input>
@@ -53,8 +82,7 @@ const Login = () => {
           {signedUp ? (
             <h2 className="text-gray-400 mx-4 mt-10 text-center cursor-pointer ">
               New to netflix?
-              <span 
-                
+              <span
                 className="text-white mx-1 "
                 onClick={() => setSignedUp(!signedUp)}
               >
@@ -65,7 +93,6 @@ const Login = () => {
             <h2 className="text-gray-400 mx-4 mt-10 text-center cursor-pointer ">
               Already a user?
               <span
-                
                 className="text-white mx-1 "
                 onClick={() => setSignedUp(!signedUp)}
               >
