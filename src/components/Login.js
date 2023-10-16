@@ -1,29 +1,67 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
-import  { checkValidation } from "../utils/validate"
-
+import { checkValidation } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import {auth} from "../utils/firebase";
 
 const Login = () => {
   const [signedUp, setSignedUp] = useState(true);
-  const [message,setMessage]=useState(null)
-  const email=useRef(null)
-  const password=useRef(null)
-  const fullName=useRef(null)
+  const [message, setMessage] = useState(null);
+  const email = useRef(null);
+  const password = useRef(null);
+  const fullName = useRef(null);
 
-
-  const handleSubmit=()=>{
-
+  const handleSubmit = () => {
     console.log("email", email.current.value);
     console.log("Password", password.current.value);
 
     const message = checkValidation(
       email.current.value,
-      password.current.value,
-      
+      password.current.value
     );
-  
-    setMessage(message)
-  }
+
+    setMessage(message);
+
+    if (!signedUp) {
+      // sign in logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("user",user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setMessage(errorCode + " - " + errorMessage);
+        });
+    } else {
+       signInWithEmailAndPassword(
+         auth,
+         email.current.value,
+         password.current.value
+       )
+         .then((userCredential) => {
+           // Signed in
+           const user = userCredential.user;
+           console.log("signed in user",user)
+           // ...
+         })
+         .catch((error) => {
+           const errorCode = error.code;
+           const errorMessage = error.message;
+           setMessage(errorCode + " - " + errorMessage);
+         });
+    }
+  };
   return (
     <div className="relative ">
       <Header></Header>
@@ -47,7 +85,7 @@ const Login = () => {
             ref={fullName}
             placeholder="Full name"
             type="text"
-            className="p-4 m-4 bg-gray-700 rounded-lg"
+            className="p-4 m-4 bg-gray-700 rounded-lg text-white"
           ></input>
         )}
         <input
