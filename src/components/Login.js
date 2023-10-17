@@ -1,26 +1,25 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidation } from "../utils/validate";
+import { addUser } from "../utils/userSlice";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
-import { addUser } from "../utils/userSlice";
-
+import { MAIN_BACKGROUND_IMAGE } from "../utils/constants";
+import { AVATAR_URL } from "../utils/constants";
 const Login = () => {
   const [signedUp, setSignedUp] = useState(true);
   const [message, setMessage] = useState(null);
   const email = useRef(null);
   const password = useRef(null);
   const fullName = useRef(null);
-  const navigate = useNavigate();
 
   const handleSubmit = () => {
-    console.log("email", email.current.value);
-    console.log("Password", password.current.value);
+    // console.log("email", email.current.value);
+    // console.log("Password", password.current.value);
 
     const message = checkValidation(
       email.current.value,
@@ -30,7 +29,7 @@ const Login = () => {
     setMessage(message);
 
     if (!signedUp) {
-      // sign in logic
+      // sign up logic
       createUserWithEmailAndPassword(
         auth,
         email.current.value,
@@ -43,21 +42,22 @@ const Login = () => {
           // updating name
           updateProfile(user, {
             displayName: fullName.current.value,
-            photoURL: "https://example.com/jane-q-user/profile.jpg",
+            photoURL: {AVATAR_URL},
           })
             .then(() => {
               // Profile updated!
               // ...
-              // const { uid, email, displayName, photoURL } = user;
-              // dispatchEvent(
-              //   addUser({
-              //     uid: uid,
-              //     email: email,
-              //     displayName: displayName,
-              //     photoURL: photoURL,
-              //   })
-              // );
-              navigate("/browse");
+
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatchEvent(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                }),
+                console.log("inside updaate", auth)
+              );
             })
             .catch((error) => {
               // An error occurred
@@ -65,7 +65,8 @@ const Login = () => {
               setMessage(error.message);
             });
 
-          console.log("user", user);
+          // console.log("user", user);
+          //    console.log("auth", auth);
 
           // ...
         })
@@ -83,9 +84,6 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log("signed in user", user);
-          navigate("/browse");
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -97,11 +95,9 @@ const Login = () => {
   return (
     <div className="relative ">
       <Header></Header>
-
       <img
         className="main-img absolute "
-        src="https://assets.nflxext.com/ffe/siteui/vlv3/ab180a27-b661-44d7-a6d9-940cb32f2f4a/7fb62e44-31fd-4e1f-b6ad-0b5c8c2a20ef/IN-en-20231009-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-        alt="main-background-image"
+        src={MAIN_BACKGROUND_IMAGE}
       ></img>
 
       <form
