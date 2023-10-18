@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate} from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { addUser, removeUser } from "../utils/userSlice";
-import { DEFAULT_PROFILE_PIC, LOGO } from "../utils/constants";
+import {  LOGO } from "../utils/constants";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
-  // console.log("store", user);
 
   // we need to setup this event listener only once thats why we used useEffect
   useEffect(() => {

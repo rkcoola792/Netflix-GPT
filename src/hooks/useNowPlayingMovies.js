@@ -5,7 +5,6 @@ import { useEffect } from "react";
 
 export const useNowPlayingMovies = () => {
   const storeMovies = useSelector((store) => store.movies);
-  // console.log("storeomvies", storeMovies);
   const dispatch = useDispatch();
   const getNowPlayingMovies = async () => {
     const data = await fetch(
@@ -13,7 +12,6 @@ export const useNowPlayingMovies = () => {
       API_OPTIONS
     );
     const jsonData = await data.json();
-    console.log("aPI movies", jsonData.results);
     dispatch(addNowPlayingMovies(jsonData.results));
   };
   useEffect(() => {

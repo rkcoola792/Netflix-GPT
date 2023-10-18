@@ -18,8 +18,6 @@ const Login = () => {
   const fullName = useRef(null);
 
   const handleSubmit = () => {
-    // console.log("email", email.current.value);
-    // console.log("Password", password.current.value);
 
     const message = checkValidation(
       email.current.value,
@@ -56,7 +54,6 @@ const Login = () => {
                   displayName: displayName,
                   photoURL: photoURL,
                 }),
-                console.log("inside updaate", auth)
               );
             })
             .catch((error) => {
@@ -65,8 +62,6 @@ const Login = () => {
               setMessage(error.message);
             });
 
-          // console.log("user", user);
-          //    console.log("auth", auth);
 
           // ...
         })

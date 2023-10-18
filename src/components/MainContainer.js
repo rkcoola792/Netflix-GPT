@@ -6,16 +6,14 @@ import { useSelector } from 'react-redux'
 const MainContainer = () => {
   // subscribing to the store
   const movies = useSelector((store) => store?.movies?.nowPlayingMovies);
-  console.log("Inside maincontainer ", movies);
 
   if (!movies) return;
   const mainMovie = movies[0];
-  console.log("Main movie", mainMovie);
-  const {original_title,overview}=mainMovie;
+  const {original_title,overview,id}=mainMovie;
   return (
     <div>
-      <VideoBackground />
       <VideoTitle title={original_title} description={overview} ></VideoTitle>
+      <VideoBackground movieID={id}/>
     </div>
   );
 }
