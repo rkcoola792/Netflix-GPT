@@ -5,6 +5,7 @@ import SecondaryContainer from './SecondaryContainer';
 import GptSearch from './GptSearch';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import Footer from './Footer';
 
 const Browse = () => {
 useNowPlayingMovies();
@@ -13,17 +14,21 @@ const showGptSearch=useSelector(store=>store.gpt.initialState)
 console.log(showGptSearch)
   return (
     <div>
-      
       <Header></Header>
 
       {showGptSearch ? (
-        <GptSearch />
-      ) : ( 
         <>
-        <MainContainer />
-        <SecondaryContainer /> 
+          {" "}
+          <GptSearch />
+          <Footer />
         </>
-       )}
+      ) : (
+        <>
+          <MainContainer />
+          <SecondaryContainer />
+          <Footer></Footer>
+        </>
+      )}
     </div>
   );
 }
