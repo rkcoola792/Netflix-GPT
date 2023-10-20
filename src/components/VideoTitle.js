@@ -4,8 +4,8 @@ import React from 'react'
 const VideoTitle = ({title,description}) => {
 
   return (
-    <div className="bg-gradient-to-r from-black w-screen aspect-video absolute opacity-80">
-      <div className="title-container ml-10 p-6 absolute top-48 text-white ">
+    <div className="bg-gradient-to-r from-black w-screen aspect-video absolute opacity-95">
+      <div className="title-container ml-10 p-6 absolute top-28 opacity-95 text-white ">
         <h1 className="text-4xl font-bold my-6">{title}</h1>
         <p className="w-[25%] font-semibold">{description}</p>
 

@@ -10,11 +10,11 @@ const SecondaryContainer = () => {
   useTopRatedMovies();
   useUpcomingMovies();
   const movies=useSelector(store=>store.movies)
-  console.log("poupluar moves",movies.popularMovies)
+  // console.log("poupluar moves",movies.popularMovies)
   return (
     movies.nowPlayingMovies && (
       <div className="bg-black ">
-        <div className="-mt-44 relative z-40">
+        <div className="-mt-44 relative z-10">
           <MovieList title="Now Playing" movies={movies.nowPlayingMovies} />
           <MovieList title="Popular" movies={movies.popularMovies} />
           <MovieList title="Top-Rated" movies={movies.topRatedMovies} />

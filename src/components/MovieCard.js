@@ -2,12 +2,10 @@ import React from 'react'
 
 const MovieCard = ({cardImg}) => {
   return (
-    <div className='flex w-64 pr-1'>
+    <div className="flex w-40 pr-1 ">
       <img
-        src={
-          "https://image.tmdb.org/t/p/w500/" +
-          cardImg
-        }
+        className="hover:scale-125 transition duration-100 ease-out hover:ease-in "
+        src={"https://image.tmdb.org/t/p/w500/" + cardImg}
       ></img>
     </div>
   );
