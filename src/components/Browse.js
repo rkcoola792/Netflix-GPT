@@ -4,7 +4,6 @@ import MainContainer from './MainContainer';
 import SecondaryContainer from './SecondaryContainer';
 import GptSearch from './GptSearch';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
 import Footer from './Footer';
 
 const Browse = () => {

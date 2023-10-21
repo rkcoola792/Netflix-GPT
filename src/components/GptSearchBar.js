@@ -1,14 +1,27 @@
 import React, { useRef } from "react";
 import { translation } from "../utils/translation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openai } from "../utils/openAI";
+import { API_OPTIONS } from "../utils/constants";
+import { addGptMovieResult, addGptSearchedMovieNames } from "../utils/gptSlice";
 
 const GptSearchBar = () => {
   const languageLocale = useSelector((store) => store?.config?.lang);
   const gptSearchText = useRef(null);
+  const dispatch=useDispatch();
 
+  // search movie in tmdb database 
+  const searchMoviesTMDB=async (movie)=>{
+   const data= await fetch(
+      "https://api.themoviedb.org/3/search/movie?query="+movie+"&include_adult=false&language=en-US&page=1",
+      API_OPTIONS
+    );
+ const json=await data.json();
+ return json.results;
+  }
+// handle the gpt search
   const handleGptSearch = async () => {
-    console.log(gptSearchText.current.value);
+    // console.log(gptSearchText.current.value);
     // make an api call to gpt api and get the movie results
     const gptQuery =
       "Act as a movie recommendation system and suggest some movies for  the query:" +
@@ -19,12 +32,23 @@ const GptSearchBar = () => {
       messages: [{ role: "user", content: gptQuery }],
       model: "gpt-3.5-turbo",
     });
-    const gptSearchedMovies = gptSearchResults?.choices[0]?.message?.content;
-    if(!gptSearchResults.choices){
-      // tod do the error handling later
+    const gptSearchedMovies =
+      gptSearchResults?.choices[0]?.message?.content.split(",");
+    if (!gptSearchResults.choices) {
+      // to do the error handling later
     }
-    console.log("movies choices",gptSearchResults.choices)
-    console.log("movies seaarched",gptSearchedMovies.split(","))
+
+    // console.log("movies choices", gptSearchResults.choices);
+    console.log("movies seaarched", gptSearchedMovies);
+    dispatch(addGptSearchedMovieNames(gptSearchedMovies));
+
+    // for each movie recieved from gpt search, search the data in teh tmdb database
+    const promiseArray=gptSearchedMovies.map(movie=>searchMoviesTMDB(movie))
+    const tmdbResults=await Promise.all(promiseArray);
+    console.log("tmdb searched results", tmdbResults )
+    dispatch(addGptMovieResult(tmdbResults))
+
+
   };
 
   return (

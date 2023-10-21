@@ -26,4 +26,4 @@ export const SUPPORTED_LANGUAGES = [
 ];
 
 // export const OPEN_AI_KEY="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";
-export const OPEN_AI_KEY = "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";
+export const OPEN_AI_KEY = "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";
