@@ -4,7 +4,7 @@ import { addNowPlayingMovies } from "../utils/movieSlice";
 import { useEffect } from "react";
 
 export const useNowPlayingMovies = () => {
-  // const storeMovies = useSelector((store) => store.movies);
+  const storeMovies = useSelector((store) => store.movies.nowPlayingMovies);
   const dispatch = useDispatch();
   const getNowPlayingMovies = async () => {
     const data = await fetch(
@@ -15,6 +15,6 @@ export const useNowPlayingMovies = () => {
     dispatch(addNowPlayingMovies(jsonData.results));
   };
   useEffect(() => {
-    getNowPlayingMovies();
+    storeMovies && getNowPlayingMovies();
   }, []);
 };
